@@ -44,7 +44,6 @@ public class SudokoHandler {
                     difficulty = Difficulty.HARD;
                 }
             } else {
-                System.out.println("This sudoku is too hard for me to solve");
                 difficulty = Difficulty.IMPOSSIBLE;
                 break;
             }

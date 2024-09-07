@@ -6,7 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class Main {
-    public static void main(String[] args) {
+    static void runFile(String filename) {
         SudokoHandler sh = new SudokoHandler();
 
         int total = 0;
@@ -17,7 +17,7 @@ public class Main {
         int hard = 0;
 
         try {
-            BufferedReader reader = new BufferedReader(new FileReader("test.txt"));
+            BufferedReader reader = new BufferedReader(new FileReader(filename));
             String line = reader.readLine();
             while (line != null) {
                 int[] values = new int[81];
@@ -73,5 +73,9 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void main(String[] args) {
+        runFile("test.seed");
     }
 }
