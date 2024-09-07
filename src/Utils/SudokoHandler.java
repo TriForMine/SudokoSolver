@@ -5,19 +5,24 @@ import Rules.DR2;
 import Rules.DR3;
 import Rules.DeductionRule;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SudokoHandler {
-    DeductionRule dr1 = DR1.getInstance();
-    DeductionRule dr2 = DR2.getInstance();
-    DeductionRule dr3 = DR3.getInstance();
+    final private List<DeductionRule> rules = new ArrayList<>();
 
     private Grid grid;
 
     public SudokoHandler() {
         grid = new Grid();
+        rules.add(DR1.getInstance());
+        rules.add(DR2.getInstance());
+        rules.add(DR3.getInstance());
     }
 
     public void initGrid(int[] values) {
         grid = new Grid();
+
         for (int i = 0; i < 81; i++) {
             if (values[i] != -1) {
                 grid.setValue(i, values[i]);
@@ -30,20 +35,19 @@ public class SudokoHandler {
 
         int iteration = 0;
 
-        while (!grid.isSolved() && iteration < 100) {
-            if (dr1.apply(grid)) {
-                if (difficulty.ordinal() < Difficulty.EASY.ordinal()) {
-                    difficulty = Difficulty.EASY;
+        while (!grid.isSolved() && iteration < 30) {
+            boolean used = false;
+            for (DeductionRule rule : rules) {
+                if (rule.apply(grid)) {
+                    if (rule.getDifficulty().ordinal() > difficulty.ordinal()) {
+                        difficulty = rule.getDifficulty();
+                    }
+                    used = true;
+                    break;
                 }
-            } else if (dr2.apply(grid)) {
-                if (difficulty.ordinal() < Difficulty.MEDIUM.ordinal()) {
-                    difficulty = Difficulty.MEDIUM;
-                }
-            } else if (dr3.apply(grid)) {
-                if (difficulty.ordinal() < Difficulty.HARD.ordinal()) {
-                    difficulty = Difficulty.HARD;
-                }
-            } else {
+            }
+
+            if (!used) {
                 difficulty = Difficulty.IMPOSSIBLE;
                 break;
             }

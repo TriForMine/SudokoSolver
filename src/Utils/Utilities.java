@@ -1,5 +1,7 @@
 package Utils;
 
+import java.util.Iterator;
+
 public final class Utilities {
     /**
      * Returns the index of the box, given the row and column.
@@ -44,16 +46,16 @@ public final class Utilities {
      * @param values list of values to check
      * @return true if all values are unique
      */
-    public static boolean hasNoDuplicate(int[] values) {
+    public static boolean hasNoDuplicate(Iterator<Integer> values) {
         boolean[] seen = new boolean[9];
-        for (int value : values) {
-            if (value == -1) {
-                continue;
+        while (values.hasNext()) {
+            int value = values.next();
+            if (value != -1) {
+                if (seen[value - 1]) {
+                    return false;
+                }
+                seen[value - 1] = true;
             }
-            if (seen[value - 1]) {
-                return false;
-            }
-            seen[value - 1] = true;
         }
         return true;
     }

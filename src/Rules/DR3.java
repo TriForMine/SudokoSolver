@@ -1,5 +1,6 @@
 package Rules;
 
+import Utils.Difficulty;
 import Utils.Grid;
 
 /**
@@ -9,6 +10,10 @@ import Utils.Grid;
  */
 public class DR3 extends DeductionRule {
     private static final DR3 instance = new DR3();
+
+    public DR3() {
+        super(Difficulty.HARD);
+    }
 
     public static DR3 getInstance() {
         return instance;

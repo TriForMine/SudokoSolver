@@ -1,10 +1,11 @@
 package Utils;
 
-import java.util.BitSet;
+import java.util.*;
+import java.util.function.Consumer;
 
 import static Utils.Utilities.*;
 
-public class Grid {
+public class Grid implements Iterable<Integer> {
     final private int[] grid = new int[81];
     final private BitSet[] possibleValues = new BitSet[81];
 
@@ -55,36 +56,36 @@ public class Grid {
      * @param row 0-8 (top to bottom)
      * @return row
      */
-    public int[] getRow(int row) {
-        int[] result = new int[9];
-        System.arraycopy(grid, row * 9, result, 0, 9);
-        return result;
+    public Iterator<Integer> getRow(int row) {
+        return Arrays.stream(grid, row * 9, row * 9 + 9).iterator();
     }
 
     /**
      * @param column 0-8 (left to right)
      * @return column
      */
-    public int[] getColumn(int column) {
-        int[] result = new int[9];
+    public Iterator<Integer> getColumn(int column) {
+        List<Integer> result = new ArrayList<>();
         for (int i = 0; i < 9; i++) {
-            result[i] = grid[i * 9 + column];
+            result.add(grid[i * 9 + column]);
         }
-        return result;
+        return result.iterator();
     }
 
     /**
      * @param box 0-8 (left to right, top to bottom)
      * @return 3x3 box
      */
-    public int[] getBox(int box) {
-        int[] result = new int[9];
+    public Iterator<Integer> getBox(int box) {
+        List<Integer> result = new ArrayList<>();
         int row = box / 3;
         int column = box % 3;
         for (int i = 0; i < 3; i++) {
-            System.arraycopy(grid, (row * 3 + i) * 9 + column * 3, result, i * 3, 3);
+            for (int j = 0; j < 3; j++) {
+                result.add(grid[(row * 3 + i) * 9 + column * 3 + j]);
+            }
         }
-        return result;
+        return result.iterator();
     }
 
     public int[] getPossibleValues(int i) {
@@ -98,17 +99,17 @@ public class Grid {
     }
 
     private boolean isRowValid(int row) {
-        int[] values = getRow(row);
+        Iterator<Integer> values = getRow(row);
         return hasNoDuplicate(values);
     }
 
     private boolean isColumnValid(int column) {
-        int[] values = getColumn(column);
+        Iterator<Integer> values = getColumn(column);
         return hasNoDuplicate(values);
     }
 
     private boolean isBoxValid(int box) {
-        int[] values = getBox(box);
+        Iterator<Integer> values = getBox(box);
         return hasNoDuplicate(values);
     }
 
@@ -136,12 +137,15 @@ public class Grid {
         StringBuilder sb = new StringBuilder();
         String horizontalSeparator = "+-------+-------+-------+\n";
         sb.append(horizontalSeparator);
+        Iterator<Integer> iterator = iterator();
         for (int i = 0; i < 9; i++) {
             sb.append("| ");
             for (int j = 0; j < 9; j++) {
-                int value = grid[i * 9 + j];
-                sb.append(value == -1 ? " " : value);
-                sb.append(" ");
+                if (iterator.hasNext()) {
+                    int value = iterator.next();
+                    sb.append(value == -1 ? " " : value);
+                    sb.append(" ");
+                }
                 if ((j + 1) % 3 == 0) {
                     sb.append("| ");
                 }
@@ -179,5 +183,23 @@ public class Grid {
             }
         }
         System.out.println(sb.toString());
+    }
+
+    /**
+     * @return An iterator over the elements in this grid
+     */
+    @Override
+    public Iterator<Integer> iterator() {
+        return Arrays.stream(grid).iterator();
+    }
+
+    /**
+     * @param action The action to be performed for each element
+     */
+    @Override
+    public void forEach(Consumer<? super Integer> action) {
+        for (int i = 0; i < 81; i++) {
+            action.accept(grid[i]);
+        }
     }
 }
