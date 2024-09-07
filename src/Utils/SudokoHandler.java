@@ -20,38 +20,39 @@ public class SudokoHandler {
         grid = new Grid();
         for (int i = 0; i < 81; i++) {
             if (values[i] != -1) {
-                grid.setValue(i, values[i], true);
+                grid.setValue(i, values[i]);
             }
         }
     }
 
-    public Grid solve() {
-
-
-        boolean wasDR1Applied = false;
-        boolean wasDR2Applied = false;
-        boolean wasDR3Applied = false;
+    public SolverResult solve() {
+        Difficulty difficulty = Difficulty.SOLVED;
 
         int iteration = 0;
 
-        while (!grid.isSolved() && iteration < 30) {
-                if (iteration < 10) {
-                    dr1.apply(grid);
-                    wasDR1Applied = true;
-                } else if (iteration < 20) {
-                    dr2.apply(grid);
-                    wasDR2Applied = true;
-                } else {
-                    dr3.apply(grid);
-                    wasDR3Applied = true;
+        while (!grid.isSolved() && iteration < 100) {
+            if (dr1.apply(grid)) {
+                if (difficulty.ordinal() < Difficulty.EASY.ordinal()) {
+                    difficulty = Difficulty.EASY;
                 }
+            } else if (dr2.apply(grid)) {
+                if (difficulty.ordinal() < Difficulty.MEDIUM.ordinal()) {
+                    difficulty = Difficulty.MEDIUM;
+                }
+            } else if (dr3.apply(grid)) {
+                if (difficulty.ordinal() < Difficulty.HARD.ordinal()) {
+                    difficulty = Difficulty.HARD;
+                }
+            } else {
+                System.out.println("This sudoku is too hard for me to solve");
+                difficulty = Difficulty.IMPOSSIBLE;
+                break;
+            }
+
             iteration++;
         }
 
-        System.out.println("iteration: " + iteration);
-        System.out.printf("Difficulty: %s\n", wasDR1Applied ? "Easy" : wasDR2Applied ? "Medium" : "Hard");
-
-        return grid;
+        return new SolverResult(grid, difficulty);
     }
 
     @Override

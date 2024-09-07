@@ -1,10 +1,7 @@
-import Rules.DR1;
-import Rules.DeductionRule;
-import Utils.Grid;
+import Utils.SolverResult;
 import Utils.SudokoHandler;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -12,7 +9,12 @@ public class Main {
     public static void main(String[] args) {
         SudokoHandler sh = new SudokoHandler();
 
+        int total = 0;
         int solved = 0;
+        int impossible = 0;
+        int easy = 0;
+        int medium = 0;
+        int hard = 0;
 
         try {
             BufferedReader reader = new BufferedReader(new FileReader("test.txt"));
@@ -34,16 +36,39 @@ public class Main {
                 }
                 sh.initGrid(values);
 
-                Grid g = sh.solve();
-                System.out.println(g);
+                SolverResult g = sh.solve();
+                System.out.println(g.grid());
+
+                total++;
 
                 if (g.isSolved()) {
                     solved++;
                 }
 
+                switch (g.difficulty()) {
+                    case EASY:
+                        easy++;
+                        break;
+                    case MEDIUM:
+                        medium++;
+                        break;
+                    case HARD:
+                        hard++;
+                        break;
+                    case IMPOSSIBLE:
+                        impossible++;
+                        break;
+                }
+
                 line = reader.readLine();
             }
-            System.out.println("Solved " + solved + " out of 100");
+
+            System.out.printf("\u001B[32mSolved: %d/%d\u001B[0m%n", solved, total);
+            System.out.printf("\u001B[34mEasy: %d\u001B[0m%n", easy);
+            System.out.printf("\u001B[33mMedium: %d\u001B[0m%n", medium);
+            System.out.printf("\u001B[31mHard: %d\u001B[0m%n", hard);
+            System.out.printf("\u001B[35mImpossible: %d\u001B[0m%n", impossible);
+
             reader.close();
         } catch (IOException e) {
             e.printStackTrace();

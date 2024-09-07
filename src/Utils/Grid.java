@@ -1,36 +1,54 @@
 package Utils;
 
+import java.util.BitSet;
+
 import static Utils.Utilities.*;
 
 public class Grid {
     final private int[] grid = new int[81];
-    final private boolean[] fixed = new boolean[81];
+    final private BitSet[] possibleValues = new BitSet[81];
+
 
     public Grid() {
         for (int i = 0; i < 81; i++) {
             grid[i] = -1;
+            possibleValues[i] = new BitSet(9);
+            possibleValues[i].set(0, 9);
         }
-    }
-
-    public Grid(int[] grid) {
-        System.arraycopy(grid, 0, this.grid, 0, 81);
     }
 
     public int getValue(int i) {
         return grid[i];
     }
 
-    public boolean isFixed(int i) {
-        return fixed[i];
+    public void removePossibleValue(int i, int value) {
+        possibleValues[i].clear(value - 1);
+    }
+
+    public void removePossibleValue(int row, int column, int value) {
+        removePossibleValue(getIndex(row, column), value);
+    }
+
+    public boolean isPossibleValue(int i, int value) {
+        return possibleValues[i].get(value - 1);
+    }
+
+    public boolean isPossibleValue(int row, int column, int value) {
+        return isPossibleValue(getIndex(row, column), value);
     }
 
     public void setValue(int i, int value) {
         grid[i] = value;
-    }
+        possibleValues[i].clear();
 
-    public void setValue(int i, int value, boolean isFixed) {
-        grid[i] = value;
-        fixed[i] = isFixed;
+        for (int j = 0; j < 81; j++) {
+            if (j == i) {
+                continue;
+            }
+            if (getRowIndex(i) == getRowIndex(j) || getColumnIndex(i) == getColumnIndex(j) || getBoxIndex(i) == getBoxIndex(j)) {
+                possibleValues[j].clear(value - 1);
+            }
+        }
     }
 
     /**
@@ -70,53 +88,12 @@ public class Grid {
     }
 
     public int[] getPossibleValues(int i) {
-        if (grid[i] != -1 || fixed[i]) {
-            return new int[0];
-        }
-
-        int row = getRowIndex(i);
-        int column = getColumnIndex(i);
-        int box = getBoxIndex(row, column);
-
-        int[] rowValues = getRow(row);
-        int[] columnValues = getColumn(column);
-        int[] boxValues = getBox(box);
-
-        boolean[] seen = new boolean[9];
-        for (int value : rowValues) {
-            if (value != -1) {
-                seen[value - 1] = true;
-            }
-        }
-
-        for (int value : columnValues) {
-            if (value != -1) {
-                seen[value - 1] = true;
-            }
-        }
-
-        for (int value : boxValues) {
-            if (value != -1) {
-                seen[value - 1] = true;
-            }
-        }
-
-        int count = 0;
-        for (boolean b : seen) {
-            if (!b) {
-                count++;
-            }
-        }
-
-        int[] result = new int[count];
+        BitSet bitSet = possibleValues[i];
+        int[] result = new int[bitSet.cardinality()];
         int index = 0;
-        for (int j = 0; j < 9; j++) {
-            if (!seen[j]) {
-                result[index] = j + 1;
-                index++;
-            }
+        for (int j = bitSet.nextSetBit(0); j >= 0; j = bitSet.nextSetBit(j + 1)) {
+            result[index++] = j + 1;
         }
-
         return result;
     }
 
@@ -175,5 +152,32 @@ public class Grid {
             }
         }
         return sb.toString();
+    }
+
+    public void printPossibleValuesGrid() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Possible values:\n");
+        String horizontalSeparator = "+-------------------------------+-------------------------------+-------------------------------+\n";
+        sb.append(horizontalSeparator);
+        for (int i = 0; i < 9; i++) {
+            sb.append("| ");
+            for (int j = 0; j < 9; j++) {
+                int index = i * 9 + j;
+
+                int[] possibleValues = getPossibleValues(index);
+                for (int k = 0; k < 9; k++) {
+                    sb.append(possibleValues.length > k ? possibleValues[k] : " ");
+                }
+                sb.append(" ");
+                if ((j + 1) % 3 == 0) {
+                    sb.append("| ");
+                }
+            }
+            sb.append("\n");
+            if ((i + 1) % 3 == 0) {
+                sb.append(horizontalSeparator);
+            }
+        }
+        System.out.println(sb.toString());
     }
 }

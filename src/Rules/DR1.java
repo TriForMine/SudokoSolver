@@ -5,7 +5,7 @@ import Utils.Grid;
 /**
  * DR1 is a class that represents the first deduction rule.
  * The rule is as follows:
- * If a cell has only one possible value, then that value is the value of the cell.
+ * Naked Single
  */
 public class DR1 extends DeductionRule {
     private static final DR1 instance = new DR1();
@@ -20,11 +20,12 @@ public class DR1 extends DeductionRule {
             return false;
         }
 
-        if (g.getPossibleValues(i).length == 1) {
-            int value = g.getPossibleValues(i)[0];
-            g.setValue(i, value);
+        int[] possibleValues = g.getPossibleValues(i);
+        if (possibleValues.length == 1) {
+            g.setValue(i, possibleValues[0]);
             return true;
         }
+
         return false;
     }
 }
