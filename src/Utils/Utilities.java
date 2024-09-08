@@ -1,6 +1,6 @@
 package Utils;
 
-import java.util.Iterator;
+import Iterators.GridIterator;
 
 public final class Utilities {
     /**
@@ -46,7 +46,7 @@ public final class Utilities {
      * @param values list of values to check
      * @return true if all values are unique
      */
-    public static boolean hasNoDuplicate(Iterator<Integer> values) {
+    public static boolean hasNoDuplicate(GridIterator values) {
         boolean[] seen = new boolean[9];
         while (values.hasNext()) {
             int value = values.next();

@@ -1,3 +1,6 @@
+import IO.LogLevel;
+import IO.Logger;
+import IO.MessageBuilder;
 import Utils.SolverResult;
 import Utils.SudokoHandler;
 
@@ -7,6 +10,7 @@ import java.io.IOException;
 
 public class Main {
     static void runFile(String filename) {
+        long startTime = System.currentTimeMillis();
         SudokoHandler sh = new SudokoHandler();
 
         int total = 0;
@@ -37,7 +41,7 @@ public class Main {
                 sh.initGrid(values);
 
                 SolverResult g = sh.solve();
-                System.out.println(g.grid());
+                Logger.debug(g.grid());
 
                 total++;
 
@@ -63,19 +67,27 @@ public class Main {
                 line = reader.readLine();
             }
 
-            System.out.printf("\u001B[32mSolved: %d/%d\u001B[0m%n", solved, total);
-            System.out.printf("\u001B[34mEasy: %d\u001B[0m%n", easy);
-            System.out.printf("\u001B[33mMedium: %d\u001B[0m%n", medium);
-            System.out.printf("\u001B[31mHard: %d\u001B[0m%n", hard);
-            System.out.printf("\u001B[35mImpossible: %d\u001B[0m%n", impossible);
+            Logger.info(new MessageBuilder()
+                    .info().text("Easy: %d\n")
+                    .warn().text("Medium: %d\n")
+                    .error().text("Hard: %d\n")
+                    .color("\u001B[35m").text("Impossible: %d")
+                    .args(easy, medium, hard, impossible)
+                    .build());
+
+            Logger.success("Successfully solved %d/%d sudokus in %dms (%.2fms per sudoku).", solved, total, System.currentTimeMillis() - startTime, (double) (System.currentTimeMillis() - startTime) / total);
 
             reader.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.error(e);
         }
     }
 
     public static void main(String[] args) {
+        Logger.setLogLevel(LogLevel.INFO);
+
+        Logger.info("Welcome to Sudoko Solver!");
+        Logger.info("Loading sudokus from test.txt...");
         runFile("test.txt");
     }
 }

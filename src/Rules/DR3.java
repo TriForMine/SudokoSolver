@@ -1,5 +1,6 @@
 package Rules;
 
+import IO.Logger;
 import Utils.Difficulty;
 import Utils.Grid;
 
@@ -41,6 +42,7 @@ public class DR3 extends DeductionRule {
                                 for (int c = blockCol1 * 3; c < blockCol1 * 3 + 3; c++) {
                                     if (g.isPossibleValue(r, c, num)) {
                                         g.removePossibleValue(r, c, num);
+                                        Logger.trace("DR3: Pointing Pair at (%d, %d) with value %d", r, c, num);
                                         return true;
                                     }
                                 }

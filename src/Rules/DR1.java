@@ -1,5 +1,6 @@
 package Rules;
 
+import IO.Logger;
 import Utils.Difficulty;
 import Utils.Grid;
 
@@ -28,6 +29,7 @@ public class DR1 extends DeductionRule {
         int[] possibleValues = g.getPossibleValues(i);
         if (possibleValues.length == 1) {
             g.setValue(i, possibleValues[0]);
+            Logger.trace("DR1: Naked Single at (%d, %d) with value %d", i / 9, i % 9, possibleValues[0]);
             return true;
         }
 

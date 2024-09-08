@@ -1,5 +1,6 @@
 package Utils;
 
+import IO.Logger;
 import Rules.DR1;
 import Rules.DR2;
 import Rules.DR3;
@@ -46,6 +47,8 @@ public class SudokoHandler {
                     break;
                 }
             }
+
+            Logger.trace("Iteration: %d Difficulty: %s\n%s", iteration, difficulty, grid.getPossibleValuesGrid());
 
             if (!used) {
                 difficulty = Difficulty.IMPOSSIBLE;

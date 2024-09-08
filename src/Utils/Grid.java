@@ -1,6 +1,13 @@
 package Utils;
 
-import java.util.*;
+import Iterators.GridBoxIterator;
+import Iterators.GridColumnIterator;
+import Iterators.GridIterator;
+import Iterators.GridRowIterator;
+
+import java.util.Arrays;
+import java.util.BitSet;
+import java.util.Iterator;
 import java.util.function.Consumer;
 
 import static Utils.Utilities.*;
@@ -20,6 +27,10 @@ public class Grid implements Iterable<Integer> {
 
     public int getValue(int i) {
         return grid[i];
+    }
+
+    public int getValue(int row, int column) {
+        return grid[getIndex(row, column)];
     }
 
     public void removePossibleValue(int i, int value) {
@@ -56,36 +67,24 @@ public class Grid implements Iterable<Integer> {
      * @param row 0-8 (top to bottom)
      * @return row
      */
-    public Iterator<Integer> getRow(int row) {
-        return Arrays.stream(grid, row * 9, row * 9 + 9).iterator();
+    public GridIterator getRow(int row) {
+        return new GridRowIterator(this, row);
     }
 
     /**
      * @param column 0-8 (left to right)
      * @return column
      */
-    public Iterator<Integer> getColumn(int column) {
-        List<Integer> result = new ArrayList<>();
-        for (int i = 0; i < 9; i++) {
-            result.add(grid[i * 9 + column]);
-        }
-        return result.iterator();
+    public GridIterator getColumn(int column) {
+        return new GridColumnIterator(this, column);
     }
 
     /**
      * @param box 0-8 (left to right, top to bottom)
      * @return 3x3 box
      */
-    public Iterator<Integer> getBox(int box) {
-        List<Integer> result = new ArrayList<>();
-        int row = box / 3;
-        int column = box % 3;
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                result.add(grid[(row * 3 + i) * 9 + column * 3 + j]);
-            }
-        }
-        return result.iterator();
+    public GridIterator getBox(int box) {
+        return new GridBoxIterator(this, box);
     }
 
     public int[] getPossibleValues(int i) {
@@ -99,17 +98,17 @@ public class Grid implements Iterable<Integer> {
     }
 
     private boolean isRowValid(int row) {
-        Iterator<Integer> values = getRow(row);
+        GridIterator values = getRow(row);
         return hasNoDuplicate(values);
     }
 
     private boolean isColumnValid(int column) {
-        Iterator<Integer> values = getColumn(column);
+        GridIterator values = getColumn(column);
         return hasNoDuplicate(values);
     }
 
     private boolean isBoxValid(int box) {
-        Iterator<Integer> values = getBox(box);
+        GridIterator values = getBox(box);
         return hasNoDuplicate(values);
     }
 
@@ -158,21 +157,35 @@ public class Grid implements Iterable<Integer> {
         return sb.toString();
     }
 
-    public void printPossibleValuesGrid() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Possible values:\n");
-        String horizontalSeparator = "+-------------------------------+-------------------------------+-------------------------------+\n";
+    public String getPossibleValuesGrid() {
+        StringBuilder sb = new StringBuilder("Possible values:\n");
+        String horizontalSeparator = "+-------------------------------------------+-------------------------------------------+-------------------------------------------+\n";
         sb.append(horizontalSeparator);
+
         for (int i = 0; i < 9; i++) {
             sb.append("| ");
             for (int j = 0; j < 9; j++) {
                 int index = i * 9 + j;
+                int value = getValue(index);
 
-                int[] possibleValues = getPossibleValues(index);
-                for (int k = 0; k < 9; k++) {
-                    sb.append(possibleValues.length > k ? possibleValues[k] : " ");
+                if (value != -1) {
+                    sb.append("\u001B[32m      ").append(value).append("       \u001B[0m");
+                } else {
+                    BitSet possibleValues = this.possibleValues[index];
+                    sb.append("[");
+                    for (int k = 0; k < 9; k++) {
+                        if (possibleValues.get(k)) {
+                            sb.append("\u001B[34m").append(k + 1).append("\u001B[0m");
+                        } else {
+                            sb.append(" ");
+                        }
+                        if ((k + 1) % 3 == 0 && k != 8) {
+                            sb.append(" ");
+                        }
+                    }
+                    sb.append("] ");
                 }
-                sb.append(" ");
+
                 if ((j + 1) % 3 == 0) {
                     sb.append("| ");
                 }
@@ -182,7 +195,7 @@ public class Grid implements Iterable<Integer> {
                 sb.append(horizontalSeparator);
             }
         }
-        System.out.println(sb.toString());
+        return sb.toString();
     }
 
     /**

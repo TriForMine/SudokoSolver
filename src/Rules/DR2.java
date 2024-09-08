@@ -1,5 +1,6 @@
 package Rules;
 
+import IO.Logger;
 import Utils.Difficulty;
 import Utils.Grid;
 
@@ -70,6 +71,7 @@ public class DR2 extends DeductionRule {
 
             if (isHiddenSingle) {
                 g.setValue(i, value);
+                Logger.trace("DR2: Hidden Single at (%d, %d) with value %d", row, column, value);
                 return true;
             }
 
@@ -89,6 +91,7 @@ public class DR2 extends DeductionRule {
 
             if (isHiddenSingle) {
                 g.setValue(i, value);
+                Logger.trace("DR2: Hidden Single at (%d, %d) with value %d", row, column, value);
                 return true;
             }
         }
