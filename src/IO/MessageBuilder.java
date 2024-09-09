@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MessageBuilder {
-    private List<String> parts;
-    private List<String> colors;
+    private final List<String> parts;
+    private final List<String> colors;
     private Object[] args;
 
     public MessageBuilder() {

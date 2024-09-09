@@ -9,12 +9,12 @@ import Rules.DeductionRule;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SudokoHandler {
-    final private List<DeductionRule> rules = new ArrayList<>();
+public class SudokuHandler {
+    private final List<DeductionRule> rules = new ArrayList<>();
 
     private Grid grid;
 
-    public SudokoHandler() {
+    public SudokuHandler() {
         grid = new Grid();
         rules.add(DR1.getInstance());
         rules.add(DR2.getInstance());

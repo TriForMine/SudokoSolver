@@ -24,78 +24,49 @@ public class DR2 extends DeductionRule {
 
     @Override
     public boolean apply(Grid g, int i) {
-
-        if (g.getValue(i) != -1) {
-            return false;
-        }
+        if (g.getValue(i) != -1) return false;
 
         int row = getRowIndex(i);
         int column = getColumnIndex(i);
         int block = getBoxIndex(row, column);
-
         int[] possibleValues = g.getPossibleValues(i);
 
         for (int value : possibleValues) {
-            boolean isHiddenSingle = true;
-
-            // Check row
-            for (int j = 0; j < 9; j++) {
-                if (j == column) {
-                    continue;
-                }
-                int index = getIndex(row, j);
-                if (g.getPossibleValues(index).length > 0 && g.isPossibleValue(index, value)) {
-                    isHiddenSingle = false;
-                    break;
-                }
-            }
-
-            if (isHiddenSingle) {
-                g.setValue(i, value);
-                return true;
-            }
-
-            isHiddenSingle = true;
-
-            // Check column
-            for (int j = 0; j < 9; j++) {
-                if (j == row) {
-                    continue;
-                }
-                int index = getIndex(j, column);
-                if (g.getPossibleValues(index).length > 0 && g.isPossibleValue(index, value)) {
-                    isHiddenSingle = false;
-                    break;
-                }
-            }
-
-            if (isHiddenSingle) {
-                g.setValue(i, value);
-                Logger.trace("DR2: Hidden Single at (%d, %d) with value %d", row, column, value);
-                return true;
-            }
-
-            isHiddenSingle = true;
-
-            // Check block
-            int[] blockIndices = getBoxIndices(block);
-            for (int index : blockIndices) {
-                if (index == i) {
-                    continue;
-                }
-                if (g.getPossibleValues(index).length > 0 && g.isPossibleValue(index, value)) {
-                    isHiddenSingle = false;
-                    break;
-                }
-            }
-
-            if (isHiddenSingle) {
+            if (isHiddenSingleInRow(g, row, column, value) ||
+                    isHiddenSingleInColumn(g, row, column, value) ||
+                    isHiddenSingleInBlock(g, block, i, value)) {
                 g.setValue(i, value);
                 Logger.trace("DR2: Hidden Single at (%d, %d) with value %d", row, column, value);
                 return true;
             }
         }
-
         return false;
+    }
+
+    private boolean isHiddenSingleInRow(Grid g, int row, int column, int value) {
+        for (int j = 0; j < 9; j++) {
+            if (j != column && g.isPossibleValue(getIndex(row, j), value)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean isHiddenSingleInColumn(Grid g, int row, int column, int value) {
+        for (int j = 0; j < 9; j++) {
+            if (j != row && g.isPossibleValue(getIndex(j, column), value)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean isHiddenSingleInBlock(Grid g, int block, int i, int value) {
+        for (int index : getBoxIndices(block)) {
+            if (index != i && g.isPossibleValue(index, value)) {
+                return false;
+            }
+        }
+        return true;
     }
 }

@@ -13,8 +13,8 @@ import java.util.function.Consumer;
 import static Utils.Utilities.*;
 
 public class Grid implements Iterable<Integer> {
-    final private int[] grid = new int[81];
-    final private BitSet[] possibleValues = new BitSet[81];
+    private final int[] grid = new int[81];
+    private final BitSet[] possibleValues = new BitSet[81];
 
 
     public Grid() {

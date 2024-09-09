@@ -3,6 +3,9 @@ package IO;
 public class Logger {
     private static LogLevel logLevel = LogLevel.INFO;
 
+    private Logger() {
+    }
+
     public static LogLevel getLogLevel() {
         return logLevel;
     }

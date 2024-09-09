@@ -3,6 +3,9 @@ package Utils;
 import Iterators.GridIterator;
 
 public final class Utilities {
+    private Utilities() {
+    }
+
     /**
      * Returns the index of the box, given the row and column.
      *
