@@ -16,7 +16,6 @@ public class Grid implements Iterable<Integer> {
     private final int[] grid = new int[81];
     private final BitSet[] possibleValues = new BitSet[81];
 
-
     public Grid() {
         for (int i = 0; i < 81; i++) {
             grid[i] = -1;
@@ -39,6 +38,10 @@ public class Grid implements Iterable<Integer> {
 
     public void removePossibleValue(int row, int column, int value) {
         removePossibleValue(getIndex(row, column), value);
+    }
+
+    public boolean isCellEmpty(int i) {
+        return grid[i] == -1;
     }
 
     public boolean isPossibleValue(int i, int value) {

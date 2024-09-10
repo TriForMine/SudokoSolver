@@ -5,20 +5,24 @@ import Rules.DR1;
 import Rules.DR2;
 import Rules.DR3;
 import Rules.DeductionRule;
+import States.DeductionState;
+import States.SolverState;
+import States.StateResult;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SudokuHandler {
-    private final List<DeductionRule> rules = new ArrayList<>();
-
+    private SolverState solverState;
     private Grid grid;
 
     public SudokuHandler() {
         grid = new Grid();
-        rules.add(DR1.getInstance());
-        rules.add(DR2.getInstance());
-        rules.add(DR3.getInstance());
+        solverState = new DeductionState(this);
+    }
+
+    public void changeSolverState(SolverState solverState) {
+        this.solverState = solverState;
     }
 
     public void initGrid(int[] values) {
@@ -32,25 +36,20 @@ public class SudokuHandler {
     }
 
     public SolverResult solve() {
-        Difficulty difficulty = Difficulty.SOLVED;
+        Difficulty difficulty = Difficulty.UNKNOWN;
 
         int iteration = 0;
 
         while (!grid.isSolved() && iteration < 30) {
-            boolean used = false;
-            for (DeductionRule rule : rules) {
-                if (rule.apply(grid)) {
-                    if (rule.getDifficulty().ordinal() > difficulty.ordinal()) {
-                        difficulty = rule.getDifficulty();
-                    }
-                    used = true;
-                    break;
-                }
-            }
-
             Logger.trace("Iteration: %d Difficulty: %s\n%s", iteration, difficulty, grid.getPossibleValuesGrid());
 
-            if (!used) {
+            StateResult result = solverState.run(grid);
+
+            if (result.difficulty().ordinal() > difficulty.ordinal()) {
+                difficulty = result.difficulty();
+            }
+
+            if (!result.used()) {
                 difficulty = Difficulty.IMPOSSIBLE;
                 break;
             }

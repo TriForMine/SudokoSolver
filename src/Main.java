@@ -10,6 +10,7 @@ import java.io.IOException;
 
 public class Main {
     static void runFile(String filename) {
+        Logger.info("Loading sudokus from %s...", filename);
         long startTime = System.currentTimeMillis();
         SudokuHandler sh = new SudokuHandler();
 
@@ -66,7 +67,7 @@ public class Main {
         Logger.setLogLevel(LogLevel.INFO);
 
         Logger.info("Welcome to Sudoku Solver!");
-        Logger.info("Loading sudokus from test.txt...");
         runFile("test.txt");
+        //runFile("big.sdm");
     }
 }
