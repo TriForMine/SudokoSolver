@@ -3,14 +3,28 @@ package States;
 import Utils.Grid;
 import Utils.SudokuHandler;
 
-// Use to represent the state of the solver
-// Either solving by Rules or asking for a hint by the user
+/**
+ * Represents the state of the Sudoku solver.
+ * Subclasses define specific behaviors for different solving strategies.
+ */
 public abstract class SolverState {
-    SudokuHandler sudokuHandler;
 
+    protected SudokuHandler sudokuHandler;
+
+    /**
+     * Constructs a SolverState with a reference to the SudokuHandler.
+     *
+     * @param sudokuHandler The SudokuHandler managing the solving process.
+     */
     public SolverState(SudokuHandler sudokuHandler) {
         this.sudokuHandler = sudokuHandler;
     }
 
+    /**
+     * Executes the solving strategy associated with this state.
+     *
+     * @param grid The current Sudoku grid.
+     * @return A StateResult indicating if the state made progress and the difficulty involved.
+     */
     public abstract StateResult run(Grid grid);
 }

@@ -1,5 +1,8 @@
 package Utils;
 
+/**
+ * Represents the difficulty levels of Sudoku puzzles or deduction rules.
+ */
 public enum Difficulty {
     UNKNOWN,
     SOLVED,

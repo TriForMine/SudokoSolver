@@ -3,26 +3,56 @@ package Rules;
 import Utils.Difficulty;
 import Utils.Grid;
 
+/**
+ * Abstract class representing a deduction rule for solving Sudoku puzzles.
+ * Each specific deduction rule should extend this class and implement the abstract methods.
+ */
 public abstract class DeductionRule {
+
     private final Difficulty difficulty;
 
+    /**
+     * Constructor for DeductionRule.
+     *
+     * @param difficulty The difficulty level associated with this rule.
+     */
     protected DeductionRule(Difficulty difficulty) {
         this.difficulty = difficulty;
     }
 
+    /**
+     * Gets the difficulty level of the deduction rule.
+     *
+     * @return The difficulty level.
+     */
     public Difficulty getDifficulty() {
         return difficulty;
     }
 
-    public boolean apply(Grid g) {
-        boolean applied = false;
+    /**
+     * Applies the deduction rule to the entire grid.
+     *
+     * @param grid The Sudoku grid.
+     * @return True if any changes were made to the grid; false otherwise.
+     */
+    public boolean apply(Grid grid) {
+        boolean hasChanged = false;
 
-        for (int i = 0; i < 81; i++) {
-            applied |= apply(g, i);
+        for (int cellIndex = 0; cellIndex < 81; cellIndex++) {
+            if (apply(grid, cellIndex)) {
+                hasChanged = true;
+            }
         }
 
-        return applied;
+        return hasChanged;
     }
 
-    public abstract boolean apply(Grid g, int i);
+    /**
+     * Applies the deduction rule to a specific cell in the grid.
+     *
+     * @param grid      The Sudoku grid.
+     * @param cellIndex The index of the cell (0-80).
+     * @return True if any changes were made to the grid; false otherwise.
+     */
+    public abstract boolean apply(Grid grid, int cellIndex);
 }
