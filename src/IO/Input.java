@@ -10,7 +10,7 @@ public class Input {
         */
         public static String askFilePath(String message) {
             while (true) {
-                System.out.println(message);
+            System.out.println(message);
                 String input = System.console().readLine().trim();
                 if (input.isEmpty()) {
                     return null;

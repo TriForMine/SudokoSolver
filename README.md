@@ -27,7 +27,7 @@ A Java-based Sudoku Solver application that reads Sudoku puzzles from files, sol
 
 ## Requirements
 
-- Java Development Kit (JDK) 8 or higher
+- Java 23 or higher
 - A Java IDE or build tool like Maven or Gradle (optional)
 
 ## Project Structure
@@ -62,8 +62,8 @@ A Java-based Sudoku Solver application that reads Sudoku puzzles from files, sol
     - `GridIterator.java`: Interface for grid iterators.
     - `GridRowIterator.java`, `GridColumnIterator.java`, `GridBoxIterator.java`: Iterators over rows, columns, and boxes.
 - `Main.java`: Entry point of the application.
-
-## Installation
+   
+## Usage
 
 1. **Clone the repository**:
 
@@ -71,20 +71,8 @@ A Java-based Sudoku Solver application that reads Sudoku puzzles from files, sol
    git clone https://github.com/TriForMine/SudokoSolver
    cd SudokuSolver
    ```
-
-2. **Compile the project**:
-
-    - Using the command line:
-
-      ```bash
-      javac Main.java
-      ```
-
-    - Or use an IDE like IntelliJ IDEA to import the project and build.
-
-## Usage
-
-1. **Prepare Puzzle Files**:
+   
+2. **Prepare Puzzle Files**:
 
     - Create text files containing Sudoku puzzles.
     - Each line represents a puzzle.
@@ -101,7 +89,7 @@ A Java-based Sudoku Solver application that reads Sudoku puzzles from files, sol
       0,0,0,0,0,0,0,0,1,6,5,2,0,0,0,0,0,8,0,0,0,0,0,0,0,9,0,9,0,3,0,6,7,8,2,0,0,0,0,0,2,0,0,0,5,0,7,0,8,0,0,0,0,9,0,0,7,0,4,0,0,0,0,4,0,8,0,0,9,0,0,0,3,0,0,0,8,2,0,0,0
       ```
       
-2. **Run the Application**:
+3. **Run the Application**:
 
     1. 
        - **Using an IDE**:
@@ -121,8 +109,7 @@ A Java-based Sudoku Solver application that reads Sudoku puzzles from files, sol
 
        - The application will process the puzzles and display the results.
 
-
-3. **Interaction**:
+4. **Interaction**:
 
     - If the solver cannot solve a puzzle automatically, it will prompt you for input if you asked for it.
     - Follow the prompts to provide values for specific cells.

@@ -95,7 +95,10 @@ public class UserState extends SolverState {
         int column = cellIndex % 9;
         String cellPosition = String.format("%c%d", 'A' + row, column + 1);
 
-        System.out.print("Enter a value (1-9) for cell " + cellPosition + ": ");
+        System.out.print("Enter a value (1-9) for cell " + cellPosition + " (possible values: ");
+        displayPossibleValues(grid, cellIndex);
+        System.out.print("): ");
+
         while (true) {
             if (scanner.hasNextInt()) {
                 value = scanner.nextInt();
