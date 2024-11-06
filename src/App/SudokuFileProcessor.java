@@ -27,13 +27,13 @@ public class SudokuFileProcessor {
      *
      * @param filename The name of the file to process.
      */
-    public void processFile(String filename) {
+    public void processFile(String filename, boolean userHelp) {
         Logger.info("Loading Sudoku puzzles from %s...", filename);
         long startTime = System.currentTimeMillis();
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
             String line;
-            SudokuHandler sudokuHandler = new SudokuHandler();
+            SudokuHandler sudokuHandler = new SudokuHandler(userHelp);
 
             while ((line = reader.readLine()) != null) {
                 int[] gridValues = parseLine(line);

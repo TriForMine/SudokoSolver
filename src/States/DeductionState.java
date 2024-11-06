@@ -53,9 +53,13 @@ public class DeductionState extends SolverState {
         }
 
         if (!ruleApplied) {
-            highestDifficulty = Difficulty.USER;
-            // No rules could be applied; switch to UserState using the factory
-            sudokuHandler.changeSolverState(StateType.USER);
+            if (sudokuHandler.userHelp) {
+                highestDifficulty = Difficulty.USER;
+                // No rules could be applied; switch to UserState using the factory
+                sudokuHandler.changeSolverState(StateType.USER);
+            } else {
+                return new StateResult(false, Difficulty.IMPOSSIBLE);
+            }
         }
 
         return new StateResult(ruleApplied, highestDifficulty);

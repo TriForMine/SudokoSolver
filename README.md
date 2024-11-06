@@ -36,6 +36,7 @@ A Java-based Sudoku Solver application that reads Sudoku puzzles from files, sol
     - `SudokuSolverApp.java`: Main application class.
     - `SudokuFileProcessor.java`: Handles reading puzzles from files.
 - `IO/`: Input/output and logging utilities.
+    - `Input.java`: Handles user input.
     - `Logger.java`: Handles logging with different levels and colors.
     - `LogLevel.java`: Enum for log levels.
     - `MessageBuilder.java`: Builds formatted log messages.
@@ -67,7 +68,7 @@ A Java-based Sudoku Solver application that reads Sudoku puzzles from files, sol
 1. **Clone the repository**:
 
    ```bash
-   git clone https://github.com/yourusername/SudokuSolver.git
+   git clone https://github.com/TriForMine/SudokoSolver
    cd SudokuSolver
    ```
 
@@ -79,7 +80,7 @@ A Java-based Sudoku Solver application that reads Sudoku puzzles from files, sol
       javac Main.java
       ```
 
-    - Or use an IDE like Eclipse or IntelliJ IDEA to import the project and build.
+    - Or use an IDE like IntelliJ IDEA to import the project and build.
 
 ## Usage
 
@@ -108,11 +109,13 @@ A Java-based Sudoku Solver application that reads Sudoku puzzles from files, sol
       java Main
       ```
 
-    - The application will read puzzles from predefined files (e.g., `test.txt`, `big.sdm`).
+    - Follow the prompts to provide the file path and other input.
+
+    - The application will process the puzzles and display the results.
 
 3. **Interaction**:
 
-    - If the solver cannot solve a puzzle automatically, it will prompt you for input.
+    - If the solver cannot solve a puzzle automatically, it will prompt you for input if you asked for it.
     - Follow the prompts to provide values for specific cells.
 
 ## Logging
@@ -156,3 +159,6 @@ Contributions are welcome! To contribute:
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
+
+## Author
+NICOLINI Quentin - 22100103

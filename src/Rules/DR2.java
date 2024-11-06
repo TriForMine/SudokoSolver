@@ -56,6 +56,7 @@ public class DR2 extends DeductionRule {
                 return true;
             }
         }
+
         return false;
     }
 
@@ -68,7 +69,7 @@ public class DR2 extends DeductionRule {
      * @param candidate   The candidate number to check.
      * @return True if the candidate is a hidden single in the unit; otherwise, false.
      */
-    private boolean isHiddenSingle(Grid grid, int[] unitIndices, int cellIndex, int candidate) {
+    private static boolean isHiddenSingle(Grid grid, int[] unitIndices, int cellIndex, int candidate) {
         for (int index : unitIndices) {
             if (index != cellIndex && grid.isPossibleValue(index, candidate)) {
                 return false; // Candidate appears in another cell within the unit.

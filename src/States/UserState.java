@@ -46,6 +46,7 @@ public class UserState extends SolverState {
     private int promptUserForCellIndex(Grid grid) {
         Scanner scanner = new Scanner(System.in);
         int cellIndex;
+        System.out.println("The solver needs your help to proceed. Please enter a cell position and a value to continue solving the puzzle.");
         System.out.print("Enter the cell position (e.g., A1, B5, I9) where you want to place a value: ");
         while (true) {
             String input = scanner.nextLine().trim().toUpperCase();

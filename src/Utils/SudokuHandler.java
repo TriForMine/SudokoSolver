@@ -13,13 +13,15 @@ public class SudokuHandler {
 
     private SolverState solverState;
     private Grid grid;
+    public boolean userHelp;
 
     /**
      * Initializes the SudokuHandler with a new grid and sets the initial solver state using the factory.
      */
-    public SudokuHandler() {
+    public SudokuHandler(boolean userHelp) {
         this.grid = new Grid();
         changeSolverState(StateType.DEDUCTION);
+        this.userHelp = userHelp;
     }
 
     /**
@@ -69,8 +71,6 @@ public class SudokuHandler {
             if (!result.used()) {
                 break;
             }
-
-            iteration++;
         }
 
         // Determine if the puzzle is solved or impossible.
