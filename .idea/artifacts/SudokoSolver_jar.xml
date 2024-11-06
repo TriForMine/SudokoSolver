@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="SudokoSolver:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/SudokoSolver_jar</output-path>
+    <root id="archive" name="SudokoSolver.jar">
+      <element id="module-output" name="SudokoSolver" />
+    </root>
+  </artifact>
+</component>

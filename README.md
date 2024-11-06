@@ -103,15 +103,24 @@ A Java-based Sudoku Solver application that reads Sudoku puzzles from files, sol
       
 2. **Run the Application**:
 
-    - Using the command line:
+    1. 
+       - **Using an IDE**:
 
-      ```bash
-      java Main
-      ```
+            - Open the project in an IDE like IntelliJ IDEA.
+            - Run the `Main` class.
 
-    - Follow the prompts to provide the file path and other input.
+       - **Using the provided jar file**:
 
-    - The application will process the puzzles and display the results.
+            - Run the jar file with the following command:
+
+              ```bash
+              java -jar SudokuSolver.jar
+              ```
+    2.     
+       - Follow the prompts to provide the file path and other input.
+
+       - The application will process the puzzles and display the results.
+
 
 3. **Interaction**:
 
